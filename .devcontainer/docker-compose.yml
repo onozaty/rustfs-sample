@@ -27,6 +27,30 @@ services:
       --secret-key rustfsadmin
       /data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  createbuckets:
+    image: amazon/aws-cli:latest
+    depends_on:
+      rustfs:
+        condition: service_healthy
+    environment:
+      - AWS_ACCESS_KEY_ID=rustfsadmin
+      - AWS_SECRET_ACCESS_KEY=rustfsadmin
+      - AWS_DEFAULT_REGION=ap-northeast-1
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Creating RustFS buckets via AWS CLI...' &&
+      aws --endpoint-url=http://rustfs:9000 s3 mb s3://sample-bucket \
+        || echo 'sample-bucket already exists';
+      echo 'Bucket setup complete.' &&
+      exit 0
+      "
+    restart: "no"
 
 volumes:
   rustfs-data:
