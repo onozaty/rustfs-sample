@@ -6,8 +6,8 @@ RustFSを動作確認するためのサンプルです。
 
 ## RustFSへのアクセス方法
 
-DevContainer内からは``http://rustfs:9000``(S3 API)と``http://rustfs:9001``(Webコンソール)でアクセスできます。  
-ホストからは``http://localhost:9000``/``9001``を使ってください。
+DevContainer内からはS3のAPIには http://rustfs:9000 でアクセスできます。ホストからは http://localhost:9000 です。  
+RustFSのWebコンソールには、ホストから http://localhost:9001 でアクセスしてください。
 
 ## AWS CLI
 
